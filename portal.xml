@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <Portal>
+    <CampusName>City College of Technology</CampusName>
+    <Dean>Prof. Elena Ivanova</Dean>
+    <Building>Main Building, Block A</Building>
+    <FoundedYear>1995</FoundedYear>
+    <MaxStudents>5000</MaxStudents>
+  </Portal>
+</configuration>

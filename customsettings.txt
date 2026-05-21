@@ -1,0 +1,10 @@
+Custom:AppVersion
+3.7.1-campus
+Custom:MaintenanceMode
+false
+Custom:SupportPhone
++7-800-555-0199
+Custom:Theme
+dark-blue
+Custom:MaxUploadMb
+50
