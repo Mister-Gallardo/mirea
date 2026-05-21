@@ -12,7 +12,7 @@
         "Portal__SupportEmail": "env-override@campus.local",
         "AppMeta__DeployedBy": "CI/CD Pipeline"
       },
-      "commandLineArgs": "Portal:Title=\"CampusHub [CommandLine WIN]\" Portal:Semester=2025-CLI"
+      "commandLineArgs": "Portal:Title=\"CampusHub [CommandLine WIN]\" Portal:Semester=2026-CLI"
     }
   }
 }
