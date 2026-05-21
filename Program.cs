@@ -2,6 +2,7 @@ using CampusHub.ConfigCenter.Configuration;
 using CampusHub.ConfigCenter.Middleware;
 using CampusHub.ConfigCenter.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 
@@ -479,29 +480,31 @@ app.MapGet("/config/effective", (IConfiguration config, IWebHostEnvironment env)
             "[7] Environment Variables (переопределяет Portal:SupportEmail)",
             "[8] Command Line Args (наивысший приоритет — побеждает всех)"
         },
-        conflicts = new[]
+        conflicts = new object[]
         {
             new {
                 key          = "Portal:Title",
-                inJson       = "CampusHub Portal [appsettings.json]",
-                inDevJson    = "CampusHub Portal [appsettings.Development.json] — DEV MODE",
-                inCli        = "CampusHub [CommandLine WIN] (если передан через args)",
+                source1      = "appsettings.json → CampusHub Portal [appsettings.json]",
+                source2      = "appsettings.Development.json → CampusHub Portal [appsettings.Development.json] — DEV MODE",
+                source3      = "commandLineArgs → CampusHub [CommandLine WIN] (если передан через args)",
                 finalValue   = portalTitle,
-                winner       = "CommandLine > Development.json > appsettings.json (последний источник побеждает)"
+                winner       = "CommandLine [8] > Development.json [2] > appsettings.json [1]"
             },
             new {
                 key          = "Portal:SupportEmail",
-                inJson       = "support@campus.local",
-                inEnvVar     = "env-override@campus.local (Portal__SupportEmail в launchSettings)",
+                source1      = "appsettings.json → support@campus.local",
+                source2      = "appsettings.Development.json → dev-support@campus.local",
+                source3      = "EnvironmentVariables → env-override@campus.local (Portal__SupportEmail)",
                 finalValue   = supportEmail,
-                winner       = "Environment Variables (источник [7]) переопределяет JSON (источник [1])"
+                winner       = "Environment Variables [7] переопределяет JSON [1] и Dev.json [2]"
             },
             new {
                 key          = "Notifications:Sender",
-                inIni        = "noreply-ini@campus.local (notifications.ini)",
-                inMemory     = "inmemory-override@campus.local (AddInMemoryCollection)",
+                source1      = "notifications.ini → noreply-ini@campus.local",
+                source2      = "InMemoryCollection → inmemory-override@campus.local",
+                source3      = (string?)null,
                 finalValue   = notifSender,
-                winner       = "InMemoryCollection (источник [5]) переопределяет INI (источник [4])"
+                winner       = "InMemoryCollection [5] переопределяет INI [4]"
             }
         }
     }, new JsonSerializerOptions { WriteIndented = true });
