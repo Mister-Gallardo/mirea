@@ -12,13 +12,17 @@ public class TextConfigurationSource : IConfigurationSource
 
     /// <summary>
     /// Строит провайдер конфигурации для данного источника.
+    /// Относительный путь разрешается относительно рабочей директории приложения.
     /// </summary>
     public IConfigurationProvider Build(IConfigurationBuilder builder)
     {
-        // Если путь относительный — разрешаем относительно базовой директории билдера
+        // Если путь абсолютный — используем как есть.
+        // Если относительный — разрешаем относительно AppContext.BaseDirectory (выходной каталог),
+        // что соответствует поведению AddJsonFile / AddXmlFile / AddIniFile.
+        var basePath = AppContext.BaseDirectory;
         var fullPath = Path.IsPathRooted(FilePath)
             ? FilePath
-            : Path.Combine(builder.GetFileProvider().GetFileInfo(".").PhysicalPath ?? "", FilePath);
+            : Path.GetFullPath(FilePath, basePath);
 
         return new TextConfigurationProvider(fullPath);
     }
